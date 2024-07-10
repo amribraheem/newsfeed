@@ -98,10 +98,76 @@ paths:
       responses:
         201:
           description: Post created successfully
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              post:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  user_id:
+                    type: integer
+                  content:
+                    type: string
+                  created_at:
+                    type: string
+                    format: date-time
+                  updated_at:
+                    type: string
+                    format: date-time
+                  like_count:
+                    type: integer
+                  share_count:
+                    type: integer
+                  author_username:
+                    type: string
+                  author_email:
+                    type: string
         400:
           description: Invalid input
       security:
         - bearerAuth: []
+
+    get:
+      summary: Get all posts
+      responses:
+        200:
+          description: Successful operation
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              posts:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    user_id:
+                      type: integer
+                    content:
+                      type: string
+                    created_at:
+                      type: string
+                      format: date-time
+                    updated_at:
+                      type: string
+                      format: date-time
+                    like_count:
+                      type: integer
+                    share_count:
+                      type: integer
+                    author_username:
+                      type: string
+                    author_email:
+                      type: string
+        400:
+          description: Invalid input
 
   /posts/{post_id}:
     get:
@@ -114,10 +180,36 @@ paths:
       responses:
         200:
           description: Successful operation
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              post:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  user_id:
+                    type: integer
+                  content:
+                    type: string
+                  created_at:
+                    type: string
+                    format: date-time
+                  updated_at:
+                    type: string
+                    format: date-time
+                  like_count:
+                    type: integer
+                  share_count:
+                    type: integer
+                  author_username:
+                    type: string
+                  author_email:
+                    type: string
         404:
           description: Post not found
-      security:
-        - bearerAuth: []
 
     put:
       summary: Update an existing post

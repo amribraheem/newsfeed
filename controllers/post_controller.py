@@ -19,19 +19,26 @@ def add_post():
 @jwt_required()
 def update_post(post_id):
     data = request.json
-    result = post_service.update_post(post_id, data)
+    current_user = get_jwt_identity()
+    result = post_service.update_post(post_id, current_user['id'], data)
     return jsonify(result), 200 if result['success'] else 400
 
 
 @post_bp.route('/<int:post_id>', methods=['DELETE'])
 @jwt_required()
 def delete_post(post_id):
-    result = post_service.delete_post(post_id)
+    current_user = get_jwt_identity()
+    result = post_service.delete_post(post_id, current_user['id'])
     return jsonify(result), 200 if result['success'] else 400
 
 
 @post_bp.route('/<int:post_id>', methods=['GET'])
-@jwt_required()
 def get_post(post_id):
     result = post_service.get_post(post_id)
     return jsonify(result), 200 if result['success'] else 404
+
+
+@post_bp.route('', methods=['GET'])
+def get_all_posts():
+    result = post_service.get_all_posts()
+    return jsonify(result), 200 if result['success'] else 400
