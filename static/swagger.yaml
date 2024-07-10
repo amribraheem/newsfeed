@@ -278,30 +278,28 @@ paths:
       security:
         - bearerAuth: []
 
-  /comments:
+  /likes:
     post:
-      summary: Add a new comment
+      summary: Add a new like
       parameters:
         - in: body
           name: body
-          description: Comment object that needs to be added to the store
+          description: Like object that needs to be added to the store
           required: true
           schema:
             type: object
             properties:
               post_id:
                 type: integer
-              content:
-                type: string
       responses:
         201:
-          description: Comment created successfully
+          description: Like created successfully
           schema:
             type: object
             properties:
               success:
                 type: boolean
-              comment:
+              like:
                 type: object
                 properties:
                   id:
@@ -310,86 +308,37 @@ paths:
                     type: integer
                   user_id:
                     type: integer
-                  content:
-                    type: string
                   created_at:
                     type: string
                     format: date-time
-                  author_username:
+                  user_username:
                     type: string
-                  author_email:
+                  user_email:
                     type: string
         400:
           description: Invalid input
       security:
         - bearerAuth: []
 
-  /comments/{comment_id}:
-    put:
-      summary: Update an existing comment
-      parameters:
-        - name: comment_id
-          in: path
-          required: true
-          type: integer
-        - in: body
-          name: body
-          description: Comment object that needs to be updated
-          required: true
-          schema:
-            type: object
-            properties:
-              content:
-                type: string
-      responses:
-        200:
-          description: Comment updated successfully
-          schema:
-            type: object
-            properties:
-              success:
-                type: boolean
-              comment:
-                type: object
-                properties:
-                  id:
-                    type: integer
-                  post_id:
-                    type: integer
-                  user_id:
-                    type: integer
-                  content:
-                    type: string
-                  created_at:
-                    type: string
-                    format: date-time
-                  author_username:
-                    type: string
-                  author_email:
-                    type: string
-        400:
-          description: Invalid input
-      security:
-        - bearerAuth: []
-
+  /likes/{like_id}:
     delete:
-      summary: Delete a comment
+      summary: Delete a like
       parameters:
-        - name: comment_id
+        - name: like_id
           in: path
           required: true
           type: integer
       responses:
         200:
-          description: Comment deleted successfully
+          description: Like deleted successfully
         400:
           description: Invalid input
       security:
         - bearerAuth: []
 
-  /comments/post/{post_id}:
+  /likes/post/{post_id}:
     get:
-      summary: Get comments by post ID
+      summary: Get likes by post ID
       parameters:
         - name: post_id
           in: path
@@ -403,7 +352,7 @@ paths:
             properties:
               success:
                 type: boolean
-              comments:
+              likes:
                 type: array
                 items:
                   type: object
@@ -414,17 +363,15 @@ paths:
                       type: integer
                     user_id:
                       type: integer
-                    content:
-                      type: string
                     created_at:
                       type: string
                       format: date-time
-                    author_username:
+                    user_username:
                       type: string
-                    author_email:
+                    user_email:
                       type: string
         404:
-          description: Comments not found
+          description: Likes not found
 
 securityDefinitions:
   bearerAuth:
