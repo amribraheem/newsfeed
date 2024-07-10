@@ -1,5 +1,8 @@
 from flask import Flask, send_from_directory
+from flask_jwt_extended import JWTManager
 from flask_swagger_ui import get_swaggerui_blueprint
+
+from controllers.auth_controller import auth_bp
 from controllers.post_controller import post_bp
 from controllers.user_controller import user_bp
 from controllers.comment_controller import comment_bp
@@ -12,6 +15,7 @@ app = Flask(__name__)
 app.config.from_object('config.Config')
 
 initialize_db(app)
+jwt = JWTManager(app)
 
 with app.app_context():
     create_tables()
@@ -22,8 +26,9 @@ app.register_blueprint(comment_bp, url_prefix='/comments')
 app.register_blueprint(like_bp, url_prefix='/likes')
 app.register_blueprint(share_bp, url_prefix='/shares')
 app.register_blueprint(follow_bp, url_prefix='/follows')
+app.register_blueprint(auth_bp, url_prefix='/auth')
 
-# Swagger configuration
+
 SWAGGER_URL = '/swagger'
 API_URL = '/static/swagger.yaml'
 swaggerui_blueprint = get_swaggerui_blueprint(
