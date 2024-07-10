@@ -1,0 +1,258 @@
+swagger: '2.0'
+info:
+  version: "1.0.0"
+  title: Newsfeed API
+  description: API documentation for the Newsfeed application
+host: localhost:5000
+basePath: /
+schemes:
+  - http
+paths:
+  /posts:
+    post:
+      summary: Add a new post
+      parameters:
+        - in: body
+          name: body
+          description: Post object that needs to be added to the store
+          required: true
+          schema:
+            type: object
+            properties:
+              user_id:
+                type: integer
+              content:
+                type: string
+      responses:
+        201:
+          description: Post created successfully
+        400:
+          description: Invalid input
+
+  /posts/{post_id}:
+    get:
+      summary: Get a post by ID
+      parameters:
+        - name: post_id
+          in: path
+          required: true
+          type: integer
+      responses:
+        200:
+          description: Successful operation
+        404:
+          description: Post not found
+
+    put:
+      summary: Update an existing post
+      parameters:
+        - name: post_id
+          in: path
+          required: true
+          type: integer
+        - in: body
+          name: body
+          description: Post object that needs to be updated
+          required: true
+          schema:
+            type: object
+            properties:
+              content:
+                type: string
+      responses:
+        200:
+          description: Post updated successfully
+        400:
+          description: Invalid input
+
+    delete:
+      summary: Delete a post
+      parameters:
+        - name: post_id
+          in: path
+          required: true
+          type: integer
+      responses:
+        200:
+          description: Post deleted successfully
+        400:
+          description: Invalid input
+
+  /users:
+    post:
+      summary: Add a new user
+      parameters:
+        - in: body
+          name: body
+          description: User object that needs to be added to the store
+          required: true
+          schema:
+            type: object
+            properties:
+              username:
+                type: string
+              email:
+                type: string
+              password:
+                type: string
+      responses:
+        201:
+          description: User created successfully
+        400:
+          description: Invalid input
+
+  /users/{user_id}:
+    get:
+      summary: Get a user by ID
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          type: integer
+      responses:
+        200:
+          description: Successful operation
+        404:
+          description: User not found
+
+  /comments:
+    post:
+      summary: Add a new comment
+      parameters:
+        - in: body
+          name: body
+          description: Comment object that needs to be added to the store
+          required: true
+          schema:
+            type: object
+            properties:
+              post_id:
+                type: integer
+              user_id:
+                type: integer
+              content:
+                type: string
+      responses:
+        201:
+          description: Comment created successfully
+        400:
+          description: Invalid input
+
+  /comments/post/{post_id}:
+    get:
+      summary: Get comments by post ID
+      parameters:
+        - name: post_id
+          in: path
+          required: true
+          type: integer
+      responses:
+        200:
+          description: Successful operation
+        404:
+          description: Comments not found
+
+  /likes:
+    post:
+      summary: Add a new like
+      parameters:
+        - in: body
+          name: body
+          description: Like object that needs to be added to the store
+          required: true
+          schema:
+            type: object
+            properties:
+              post_id:
+                type: integer
+              user_id:
+                type: integer
+      responses:
+        201:
+          description: Like created successfully
+        400:
+          description: Invalid input
+
+  /likes/post/{post_id}:
+    get:
+      summary: Get likes by post ID
+      parameters:
+        - name: post_id
+          in: path
+          required: true
+          type: integer
+      responses:
+        200:
+          description: Successful operation
+        404:
+          description: Likes not found
+
+  /shares:
+    post:
+      summary: Add a new share
+      parameters:
+        - in: body
+          name: body
+          description: Share object that needs to be added to the store
+          required: true
+          schema:
+            type: object
+            properties:
+              post_id:
+                type: integer
+              user_id:
+                type: integer
+      responses:
+        201:
+          description: Share created successfully
+        400:
+          description: Invalid input
+
+  /shares/post/{post_id}:
+    get:
+      summary: Get shares by post ID
+      parameters:
+        - name: post_id
+          in: path
+          required: true
+          type: integer
+      responses:
+        200:
+          description: Successful operation
+        404:
+          description: Shares not found
+
+  /follows:
+    post:
+      summary: Add a new follow
+      parameters:
+        - in: body
+          name: body
+          description: Follow object that needs to be added to the store
+          required: true
+          schema:
+            type: object
+            properties:
+              follower_id:
+                type: integer
+              followed_id:
+                type: integer
+      responses:
+        201:
+          description: Follow created successfully
+        400:
+          description: Invalid input
+
+  /follows/user/{user_id}/followers:
+    get:
+      summary: Get followers by user ID
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          type: integer
+      responses:
+        200:
+          description: Successful operation
+        404:
+          description: Followers not found
