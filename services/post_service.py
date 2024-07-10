@@ -4,9 +4,9 @@ class PostService:
     def __init__(self):
         self.post_repository = PostRepository()
 
-    def add_post(self, data):
+    def add_post(self, user_id, data):
         try:
-            post_id = self.post_repository.add_post(data['user_id'], data['content'])
+            post_id = self.post_repository.add_post(user_id, data['content'])
             return {"success": True, "post_id": post_id}
         except Exception as e:
             return {"success": False, "error": str(e)}

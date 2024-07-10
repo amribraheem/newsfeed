@@ -8,6 +8,80 @@ basePath: /
 schemes:
   - http
 paths:
+  /auth/register:
+    post:
+      summary: Register a new user
+      parameters:
+        - in: body
+          name: body
+          description: User object that needs to be added to the store
+          required: true
+          schema:
+            type: object
+            properties:
+              username:
+                type: string
+              email:
+                type: string
+              password:
+                type: string
+      responses:
+        201:
+          description: User created successfully
+        400:
+          description: Invalid input
+
+  /auth/login:
+    post:
+      summary: Login and get access and refresh tokens
+      parameters:
+        - in: body
+          name: body
+          description: User login credentials
+          required: true
+          schema:
+            type: object
+            properties:
+              username:
+                type: string
+              password:
+                type: string
+      responses:
+        200:
+          description: Successful login
+          schema:
+            type: object
+            properties:
+              access_token:
+                type: string
+              refresh_token:
+                type: string
+              user:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  username:
+                    type: string
+                  email:
+                    type: string
+        401:
+          description: Invalid credentials
+
+  /auth/refresh:
+    post:
+      summary: Refresh the access token
+      responses:
+        200:
+          description: Successful token refresh
+          schema:
+            type: object
+            properties:
+              access_token:
+                type: string
+        401:
+          description: Invalid refresh token
+
   /posts:
     post:
       summary: Add a new post
@@ -19,8 +93,6 @@ paths:
           schema:
             type: object
             properties:
-              user_id:
-                type: integer
               content:
                 type: string
       responses:
@@ -28,6 +100,8 @@ paths:
           description: Post created successfully
         400:
           description: Invalid input
+      security:
+        - bearerAuth: []
 
   /posts/{post_id}:
     get:
@@ -42,6 +116,8 @@ paths:
           description: Successful operation
         404:
           description: Post not found
+      security:
+        - bearerAuth: []
 
     put:
       summary: Update an existing post
@@ -64,6 +140,8 @@ paths:
           description: Post updated successfully
         400:
           description: Invalid input
+      security:
+        - bearerAuth: []
 
     delete:
       summary: Delete a post
@@ -77,6 +155,8 @@ paths:
           description: Post deleted successfully
         400:
           description: Invalid input
+      security:
+        - bearerAuth: []
 
   /users:
     post:
@@ -128,8 +208,6 @@ paths:
             properties:
               post_id:
                 type: integer
-              user_id:
-                type: integer
               content:
                 type: string
       responses:
@@ -137,6 +215,8 @@ paths:
           description: Comment created successfully
         400:
           description: Invalid input
+      security:
+        - bearerAuth: []
 
   /comments/post/{post_id}:
     get:
@@ -151,6 +231,8 @@ paths:
           description: Successful operation
         404:
           description: Comments not found
+      security:
+        - bearerAuth: []
 
   /likes:
     post:
@@ -165,13 +247,13 @@ paths:
             properties:
               post_id:
                 type: integer
-              user_id:
-                type: integer
       responses:
         201:
           description: Like created successfully
         400:
           description: Invalid input
+      security:
+        - bearerAuth: []
 
   /likes/post/{post_id}:
     get:
@@ -186,6 +268,8 @@ paths:
           description: Successful operation
         404:
           description: Likes not found
+      security:
+        - bearerAuth: []
 
   /shares:
     post:
@@ -200,13 +284,13 @@ paths:
             properties:
               post_id:
                 type: integer
-              user_id:
-                type: integer
       responses:
         201:
           description: Share created successfully
         400:
           description: Invalid input
+      security:
+        - bearerAuth: []
 
   /shares/post/{post_id}:
     get:
@@ -221,6 +305,8 @@ paths:
           description: Successful operation
         404:
           description: Shares not found
+      security:
+        - bearerAuth: []
 
   /follows:
     post:
@@ -233,8 +319,6 @@ paths:
           schema:
             type: object
             properties:
-              follower_id:
-                type: integer
               followed_id:
                 type: integer
       responses:
@@ -242,6 +326,8 @@ paths:
           description: Follow created successfully
         400:
           description: Invalid input
+      security:
+        - bearerAuth: []
 
   /follows/user/{user_id}/followers:
     get:
@@ -256,3 +342,11 @@ paths:
           description: Successful operation
         404:
           description: Followers not found
+      security:
+        - bearerAuth: []
+
+securityDefinitions:
+  bearerAuth:
+    type: apiKey
+    name: Authorization
+    in: header

@@ -10,9 +10,7 @@ def initialize_db(app):
 
 
 def get_db():
-    from flask import current_app
-    with current_app.app_context():
-        return mysql.connection
+    return mysql.connection
 
 
 def create_tables():
