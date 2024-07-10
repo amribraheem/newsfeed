@@ -230,34 +230,6 @@ paths:
       responses:
         200:
           description: Post updated successfully
-          schema:
-            type: object
-            properties:
-              success:
-                type: boolean
-              post:
-                type: object
-                properties:
-                  id:
-                    type: integer
-                  user_id:
-                    type: integer
-                  content:
-                    type: string
-                  created_at:
-                    type: string
-                    format: date-time
-                  updated_at:
-                    type: string
-                    format: date-time
-                  like_count:
-                    type: integer
-                  share_count:
-                    type: integer
-                  author_username:
-                    type: string
-                  author_email:
-                    type: string
         400:
           description: Invalid input
       security:
@@ -278,6 +250,82 @@ paths:
       security:
         - bearerAuth: []
 
+  /users:
+    post:
+      summary: Add a new user
+      parameters:
+        - in: body
+          name: body
+          description: User object that needs to be added to the store
+          required: true
+          schema:
+            type: object
+            properties:
+              username:
+                type: string
+              email:
+                type: string
+              password:
+                type: string
+      responses:
+        201:
+          description: User created successfully
+        400:
+          description: Invalid input
+
+  /users/{user_id}:
+    get:
+      summary: Get a user by ID
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          type: integer
+      responses:
+        200:
+          description: Successful operation
+        404:
+          description: User not found
+
+  /comments:
+    post:
+      summary: Add a new comment
+      parameters:
+        - in: body
+          name: body
+          description: Comment object that needs to be added to the store
+          required: true
+          schema:
+            type: object
+            properties:
+              post_id:
+                type: integer
+              content:
+                type: string
+      responses:
+        201:
+          description: Comment created successfully
+        400:
+          description: Invalid input
+      security:
+        - bearerAuth: []
+
+  /comments/post/{post_id}:
+    get:
+      summary: Get comments by post ID
+      parameters:
+        - name: post_id
+          in: path
+          required: true
+          type: integer
+      responses:
+        200:
+          description: Successful operation
+        404:
+          description: Comments not found
+      security:
+        - bearerAuth: []
+
   /likes:
     post:
       summary: Add a new like
@@ -294,43 +342,6 @@ paths:
       responses:
         201:
           description: Like created successfully
-          schema:
-            type: object
-            properties:
-              success:
-                type: boolean
-              like:
-                type: object
-                properties:
-                  id:
-                    type: integer
-                  post_id:
-                    type: integer
-                  user_id:
-                    type: integer
-                  created_at:
-                    type: string
-                    format: date-time
-                  user_username:
-                    type: string
-                  user_email:
-                    type: string
-        400:
-          description: Invalid input
-      security:
-        - bearerAuth: []
-
-  /likes/{like_id}:
-    delete:
-      summary: Delete a like
-      parameters:
-        - name: like_id
-          in: path
-          required: true
-          type: integer
-      responses:
-        200:
-          description: Like deleted successfully
         400:
           description: Invalid input
       security:
@@ -347,31 +358,84 @@ paths:
       responses:
         200:
           description: Successful operation
+        404:
+          description: Likes not found
+      security:
+        - bearerAuth: []
+
+  /shares:
+    post:
+      summary: Add a new share
+      parameters:
+        - in: body
+          name: body
+          description: Share object that needs to be added to the store
+          required: true
           schema:
             type: object
             properties:
-              success:
-                type: boolean
-              likes:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    id:
-                      type: integer
-                    post_id:
-                      type: integer
-                    user_id:
-                      type: integer
-                    created_at:
-                      type: string
-                      format: date-time
-                    user_username:
-                      type: string
-                    user_email:
-                      type: string
+              post_id:
+                type: integer
+      responses:
+        201:
+          description: Share created successfully
+        400:
+          description: Invalid input
+      security:
+        - bearerAuth: []
+
+  /shares/post/{post_id}:
+    get:
+      summary: Get shares by post ID
+      parameters:
+        - name: post_id
+          in: path
+          required: true
+          type: integer
+      responses:
+        200:
+          description: Successful operation
         404:
-          description: Likes not found
+          description: Shares not found
+      security:
+        - bearerAuth: []
+
+  /follows:
+    post:
+      summary: Add a new follow
+      parameters:
+        - in: body
+          name: body
+          description: Follow object that needs to be added to the store
+          required: true
+          schema:
+            type: object
+            properties:
+              followed_id:
+                type: integer
+      responses:
+        201:
+          description: Follow created successfully
+        400:
+          description: Invalid input
+      security:
+        - bearerAuth: []
+
+  /follows/user/{user_id}/followers:
+    get:
+      summary: Get followers by user ID
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          type: integer
+      responses:
+        200:
+          description: Successful operation
+        404:
+          description: Followers not found
+      security:
+        - bearerAuth: []
 
 securityDefinitions:
   bearerAuth:
