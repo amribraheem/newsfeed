@@ -4,11 +4,16 @@ from mariadb import Error
 
 mysql = MySQL()
 
+
 def initialize_db(app):
     mysql.init_app(app)
 
+
 def get_db():
-    return mysql.connection
+    from flask import current_app
+    with current_app.app_context():
+        return mysql.connection
+
 
 def create_tables():
     db = None
