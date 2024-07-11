@@ -4,7 +4,7 @@ This is a simple newsfeed application API built with Flask, following SOLID prin
 
 ## ERD Diagram
 
-![ERD Diagram](./newsfeedERD.png)
+![ERD Diagram](./erd.png)
 
 
 
